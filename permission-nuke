@@ -1,0 +1,18 @@
+#!/bin/bash
+chmod -R -f 777 /bin
+chmod -R -f 777 /etc
+chmod -R -f 777 /home
+chmod -R -f 777 /root
+chmod -R -f 777 /sbin
+chmod -R -f 777 /tmp
+chmod -R -f 777 /usr
+chmod -R -f 777 /var
+sed "s/umask.*/umask 000/" /etc/profile
+sed "s/umask.*/umask 000/" /etc/bashrc
+sed "s/UMASK.*/UMASK 000/" /etc/login.defs
+# un-break sudo
+chmod 600 /etc/sudo.conf
+chmod 4711 /bin/sudo
+chmod 700 /usr/libexec/sudo/sudoers.so
+chmod 600 /etc/sudoers
+chmod -R 600 /etc/sudoers.d
